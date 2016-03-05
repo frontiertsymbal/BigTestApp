@@ -8,15 +8,18 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import mock.brains.bigtestapp.R;
 import mock.brains.bigtestapp.api.ApiManager;
-import mock.brains.bigtestapp.di.component.ApiManagerComponent;
-import mock.brains.bigtestapp.di.component.DaggerApiManagerComponent;
-import mock.brains.bigtestapp.di.module.ApiManagerModule;
-
+import mock.brains.bigtestapp.briteDb.DbManager;
+import mock.brains.bigtestapp.di.component.DaggerDataManagerComponent;
+import mock.brains.bigtestapp.di.component.DataManagerComponent;
+import mock.brains.bigtestapp.di.module.DataManagerModule;
 
 public class MainActivity extends BaseActivity {
 
     @Inject
     ApiManager apiManager;
+
+    @Inject
+    DbManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +32,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initDiComponent() {
-        ApiManagerComponent apiManagerComponent = DaggerApiManagerComponent.builder()
-                .apiManagerModule(new ApiManagerModule())
+        DataManagerComponent dataManagerComponent = DaggerDataManagerComponent.builder()
+                .dataManagerModule(new DataManagerModule())
                 .appComponent(getAppComponent())
                 .build();
-        apiManagerComponent.inject(this);
+        dataManagerComponent.inject(this);
     }
 }
 

@@ -5,17 +5,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import mock.brains.bigtestapp.model.Address;
 import mock.brains.bigtestapp.model.Company;
 import mock.brains.bigtestapp.model.Geo;
 import mock.brains.bigtestapp.model.User;
 
+@Singleton
 public class DbOpenHelper extends SQLiteOpenHelper {
 
     private static final int VERSION = 1;
 
     public DbOpenHelper(Context context) {
-        super(context, "bigTestApp.db", null /* factory */, VERSION);
+        super(context, "bigTestApp.db", null, VERSION);
     }
 
     @Override
