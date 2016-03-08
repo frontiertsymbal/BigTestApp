@@ -1,7 +1,6 @@
 package mock.brains.bigtestapp.di.component;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.squareup.sqlbrite.BriteDatabase;
@@ -24,7 +23,6 @@ public interface AppComponent extends ApiComponent {
 
     void inject(Application application);
 
-    Context context();
     SharedPreferences sharedPreferences();
     RxBus rxBus();
     BriteDatabase briteDatabase();

@@ -1,17 +1,20 @@
 package mock.brains.bigtestapp.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import mock.brains.bigtestapp.briteDb.Db;
+import rx.functions.Func1;
+
 public class Address implements Serializable {
 
     public static final String TABLE = "address";
 
-    public static final String COL_ID = "_id";
-    public static final String COL_USER_ID = "users_id";
+    public static final String COL_USER_ID = "user_id";
     public static final String COL_STREET = "street";
     public static final String COL_SUITE = "suite";
     public static final String COL_CITY = "city";
@@ -27,8 +30,16 @@ public class Address implements Serializable {
     private String zipCode;
     private Geo geo;
 
-    public Address() {
-    }
+    public static final Func1<Cursor, Address> MAPPER = cursor -> {
+        Address address = new Address();
+        address.set_id(Db.getLong(cursor, Db.COL_ID));
+        address.setUserId(Db.getInt(cursor, COL_USER_ID));
+        address.setStreet(Db.getString(cursor, COL_STREET));
+        address.setSuite(Db.getString(cursor, COL_SUITE));
+        address.setCity(Db.getString(cursor, COL_CITY));
+        address.setZipCode(Db.getString(cursor, COL_ZIP_CODE));
+        return address;
+    };
 
     public long get_id() {
         return _id;
@@ -103,7 +114,7 @@ public class Address implements Serializable {
         private final ContentValues values = new ContentValues();
 
         public Builder id(long _id) {
-            values.put(COL_ID, _id);
+            values.put(Db.COL_ID, _id);
             return this;
         }
 
@@ -136,10 +147,9 @@ public class Address implements Serializable {
             return values;
         }
 
-        public ContentValues build(User user) {
-            Address address = user.getAddress();
+        public ContentValues build(Address address) {
             return new Address.Builder()
-                    .userId(user.get_id())
+                    .userId(address.getUserId())
                     .street(address.getStreet())
                     .suite(address.getSuite())
                     .city(address.getCity())

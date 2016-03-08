@@ -9,6 +9,7 @@ import mock.brains.bigtestapp.di.module.ApiModule;
 import mock.brains.bigtestapp.di.module.AppModule;
 import mock.brains.bigtestapp.di.module.DbModule;
 import mock.brains.bigtestapp.util.Const;
+import timber.log.Timber;
 
 public class BigTestApp extends Application {
 
@@ -18,6 +19,10 @@ public class BigTestApp extends Application {
     public void onCreate() {
         super.onCreate();
         initInjector();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
     }
 
     private void initInjector() {

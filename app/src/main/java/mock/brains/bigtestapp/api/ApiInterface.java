@@ -2,8 +2,6 @@ package mock.brains.bigtestapp.api;
 
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 import mock.brains.bigtestapp.model.Album;
 import mock.brains.bigtestapp.model.Comment;
 import mock.brains.bigtestapp.model.Photo;
@@ -14,10 +12,11 @@ import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
 
-    /**
-     * JSONPlaceholder API
-     * http://http://jsonplaceholder.typicode.com/
-     */
+/**
+ * JSONPlaceholder API
+ *
+ * @link http://http://jsonplaceholder.typicode.com/
+ */
 public interface ApiInterface {
 
     @GET("users")

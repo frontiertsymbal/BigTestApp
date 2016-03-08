@@ -1,16 +1,17 @@
 package mock.brains.bigtestapp.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
+import mock.brains.bigtestapp.briteDb.Db;
+import rx.functions.Func1;
 
-public class User implements Serializable {
+public class User {
 
-    public static final String TABLE = "users";
+    public static final String TABLE = "user";
 
-    public static final String COL_ID = "_id";
     public static final String COL_USER_ID = "user_id";
     public static final String COL_NAME = "name";
     public static final String COL_USER_NAME = "user_name";
@@ -37,22 +38,17 @@ public class User implements Serializable {
     private Address address;
     private Company company;
 
-    public User() {
-    }
-
-//    public static final Func1<Cursor, User> MAPPER = new Func1<Cursor, User>() {
-//        @Override public User call(Cursor cursor) {
-//            User user = new User();
-//            user.set_id(Db.getLong(cursor, COL_ID));
-//            user.setUserId(Db.getInt(cursor, COL_USER_ID));
-//            user.setName(Db.getString(cursor, COL_NAME));
-//            user.setUserName(Db.getString(cursor, COL_USER_NAME));
-//            user.setEmail(Db.getString(cursor, COL_EMAIL));
-//            user.setPhone(Db.getString(cursor, COL_PHONE));
-//            user.setWebSite(Db.getString(cursor, COL_WEB_SITE));
-//            return user;
-//        }
-//    };
+    public static final Func1<Cursor, User> MAPPER = cursor -> {
+        User user = new User();
+        user.set_id(Db.getLong(cursor, Db.COL_ID));
+        user.setUserId(Db.getInt(cursor, COL_USER_ID));
+        user.setName(Db.getString(cursor, COL_NAME));
+        user.setUserName(Db.getString(cursor, COL_USER_NAME));
+        user.setEmail(Db.getString(cursor, COL_EMAIL));
+        user.setPhone(Db.getString(cursor, COL_PHONE));
+        user.setWebSite(Db.getString(cursor, COL_WEB_SITE));
+        return user;
+    };
 
     public long get_id() {
         return _id;
@@ -145,7 +141,7 @@ public class User implements Serializable {
         private final ContentValues values = new ContentValues();
 
         public Builder id(long _id) {
-            values.put(COL_ID, _id);
+            values.put(Db.COL_ID, _id);
             return this;
         }
 

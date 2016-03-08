@@ -1,7 +1,6 @@
 package mock.brains.bigtestapp.di.module;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
@@ -12,14 +11,11 @@ import dagger.Module;
 import dagger.Provides;
 import mock.brains.bigtestapp.BuildConfig;
 import mock.brains.bigtestapp.briteDb.DbOpenHelper;
-import mock.brains.bigtestapp.util.annotation.Cycles;
-import mock.brains.bigtestapp.util.annotation.Lifecycle;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 @Module
 public class DbModule {
-
-    private static final String TAG = DbModule.class.getSimpleName();
 
     @Provides
     @Singleton
@@ -34,7 +30,7 @@ public class DbModule {
     @Provides
     @Singleton
     SqlBrite provideSqlBrite() {
-        return SqlBrite.create(message -> Log.d(TAG, message));
+        return SqlBrite.create(message -> Timber.d(message));
     }
 
     @Provides

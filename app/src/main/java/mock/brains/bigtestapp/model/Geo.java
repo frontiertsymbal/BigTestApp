@@ -1,14 +1,17 @@
 package mock.brains.bigtestapp.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import java.io.Serializable;
+
+import mock.brains.bigtestapp.briteDb.Db;
+import rx.functions.Func1;
 
 public class Geo implements Serializable {
 
     public static final String TABLE = "geo";
 
-    public static final String COL_ID = "_id";
     public static final String COL_ADDRESS_ID = "address_id";
     public static final String COL_LAT = "lat";
     public static final String COL_LNG = "lng";
@@ -18,8 +21,14 @@ public class Geo implements Serializable {
     private double lat;
     private double lng;
 
-    public Geo() {
-    }
+    public static final Func1<Cursor, Geo> MAPPER = cursor -> {
+        Geo geo = new Geo();
+        geo.set_id(Db.getLong(cursor, Db.COL_ID));
+        geo.setAddressId(Db.getInt(cursor, COL_ADDRESS_ID));
+        geo.setLat(Db.getDouble(cursor, COL_LAT));
+        geo.setLng(Db.getDouble(cursor, COL_LNG));
+        return geo;
+    };
 
     public long get_id() {
         return _id;
@@ -67,7 +76,7 @@ public class Geo implements Serializable {
         private final ContentValues values = new ContentValues();
 
         public Builder id(long _id) {
-            values.put(COL_ID, _id);
+            values.put(Db.COL_ID, _id);
             return this;
         }
 
@@ -90,14 +99,12 @@ public class Geo implements Serializable {
             return values;
         }
 
-        public ContentValues build(Address address) {
-            Geo geo = address.getGeo();
+        public ContentValues build(Geo geo) {
             return new Geo.Builder()
-                    .addressId(address.get_id())
+                    .addressId(geo.getAddressId())
                     .lat(geo.getLat())
                     .lng(geo.getLng())
                     .build();
         }
-
     }
 }

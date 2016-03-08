@@ -2,7 +2,6 @@ package mock.brains.bigtestapp.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import mock.brains.bigtestapp.BigTestApp;
 import mock.brains.bigtestapp.di.component.AppComponent;
@@ -17,7 +16,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDiComponent();
-        Log.e("TAG", "new activity");
     }
 
     abstract protected void initDiComponent();
@@ -26,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         return ((BigTestApp) getApplication()).getAppComponent();
     }
 
-    protected <T>RxBus getRxBus() {
+    protected <T> RxBus getRxBus() {
         return getAppComponent().rxBus();
     }
 

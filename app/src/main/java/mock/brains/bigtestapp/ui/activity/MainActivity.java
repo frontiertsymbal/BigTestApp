@@ -1,7 +1,8 @@
 package mock.brains.bigtestapp.ui.activity;
 
 import android.os.Bundle;
-import android.util.Log;
+
+import com.jakewharton.rxbinding.view.RxView;
 
 import javax.inject.Inject;
 
@@ -27,7 +28,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Log.e("TAG", "onCreate: ");
+        RxView.clicks(findViewById(R.id.button)).subscribe(v -> {
+
+        });
+
+        RxView.clicks(findViewById(R.id.button1)).subscribe(v -> {
+
+        });
     }
 
     @Override

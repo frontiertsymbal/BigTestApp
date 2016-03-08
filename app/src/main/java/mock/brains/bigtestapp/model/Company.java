@@ -1,16 +1,19 @@
 package mock.brains.bigtestapp.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import java.io.Serializable;
+
+import mock.brains.bigtestapp.briteDb.Db;
+import rx.functions.Func1;
 
 public class Company implements Serializable {
 
     public static final String TABLE = "company";
 
-    public static final String COL_ID = "_id";
-    public static final String COL_USER_ID = "users_id";
-    public static final String COL_NAME = "name";
+    public static final String COL_USER_ID = "user_id";
+    public static final String COL_NAME = "company_name";
     public static final String COL_CATCH_PHRASE = "catch_phrase";
     public static final String COL_BS = "bs";
 
@@ -21,8 +24,15 @@ public class Company implements Serializable {
     private String catchPhrase;
     private String bs;
 
-    public Company() {
-    }
+    public static final Func1<Cursor, Company> MAPPER = cursor -> {
+        Company company = new Company();
+        company.set_id(Db.getLong(cursor, Db.COL_ID));
+        company.setUserId(Db.getInt(cursor, COL_USER_ID));
+        company.setName(Db.getString(cursor, COL_NAME));
+        company.setCatchPhrase(Db.getString(cursor, COL_CATCH_PHRASE));
+        company.setBs(Db.getString(cursor, COL_BS));
+        return company;
+    };
 
     public long get_id() {
         return _id;
@@ -79,7 +89,7 @@ public class Company implements Serializable {
         private final ContentValues values = new ContentValues();
 
         public Builder id(long _id) {
-            values.put(COL_ID, _id);
+            values.put(Db.COL_ID, _id);
             return this;
         }
 
@@ -107,10 +117,9 @@ public class Company implements Serializable {
             return values;
         }
 
-        public ContentValues build(User user) {
-            Company company = user.getCompany();
+        public ContentValues build(Company company) {
             return new Company.Builder()
-                    .userId(user.get_id())
+                    .userId(company.getUserId())
                     .name(company.getName())
                     .catchPhrase(company.getCatchPhrase())
                     .bs(company.getBs())
