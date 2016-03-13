@@ -21,7 +21,7 @@ public class DataManagerModule {
 
     @Provides
     @Lifecycle(Cycles.ACTIVITY)
-    DbManager provideDbHelper(BriteDatabase briteDatabase) {
+    DbManager provideDbManager(BriteDatabase briteDatabase) {
         return new DbManager(briteDatabase);
     }
 }

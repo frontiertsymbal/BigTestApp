@@ -2,9 +2,6 @@ package mock.brains.bigtestapp.di.module;
 
 import android.content.Context;
 
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
-
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
@@ -13,9 +10,12 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import mock.brains.bigtestapp.api.ApiInterface;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class ApiModule {
@@ -72,13 +72,21 @@ public class ApiModule {
     }
 
     static OkHttpClient createHttpClient(Context context) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(TIMEOUT, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(TIMEOUT, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(TIMEOUT, TimeUnit.SECONDS);
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         File cacheDir = new File(context.getCacheDir(), "cached");
         Cache cache = new Cache(cacheDir, DISK_CACHE_SIZE);
-        okHttpClient.setCache(cache);
-        return okHttpClient;
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        httpClient.addInterceptor(logging);
+        httpClient.connectTimeout(TIMEOUT, TimeUnit.SECONDS);
+        httpClient.readTimeout(TIMEOUT, TimeUnit.SECONDS);
+        httpClient.writeTimeout(TIMEOUT, TimeUnit.SECONDS);
+
+        httpClient.cache(cache);
+
+        return httpClient.build();
     }
 }

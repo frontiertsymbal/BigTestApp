@@ -4,6 +4,9 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.QueryObservable;
+
+import java.util.ArrayList;
 
 import mock.brains.bigtestapp.model.Address;
 import mock.brains.bigtestapp.model.Company;
@@ -179,23 +182,25 @@ public class DbManager {
         return company;
     }
 
-//
-//    public QueryObservable observUser(long id) {
-//        ArrayList<String> tablesList = new ArrayList<>();
-//        tablesList.add(User.TABLE);
-//        tablesList.add(Address.TABLE);
-//        tablesList.add(Company.TABLE);
-//        tablesList.add(Geo.TABLE);
-//        String query = Db.SELECT_ALL_FROM
-//                + User.TABLE + " u, "
-//                + Address.TABLE + " a, "
-//                + Company.TABLE + " c, "
-//                + Geo.TABLE + " g "
-//                + Db.WHERE
-//                + "u." + Db.COL_ID + Db.EQUALS_ARG + Db.AND
-//                + "a." + Address.COL_USER_ID + Db.EQUALS + "u." + Db.COL_ID + Db.AND
-//                + "c." + Company.COL_USER_ID + Db.EQUALS + "u." + Db.COL_ID + Db.AND
-//                + "g." + Geo.COL_ADDRESS_ID + Db.EQUALS + "a." + Db.COL_ID;
-//        return briteDatabase.createQuery(tablesList, query, String.valueOf(id));
-//    }
+    public QueryObservable observUser(long id) {
+        ArrayList<String> tablesList = new ArrayList<>();
+        tablesList.add(User.TABLE);
+        tablesList.add(Address.TABLE);
+        tablesList.add(Company.TABLE);
+        tablesList.add(Geo.TABLE);
+
+        String query = Db.SELECT_ALL_FROM
+                + User.TABLE + " u, "
+                + Address.TABLE + " a, "
+                + Company.TABLE + " c, "
+                + Geo.TABLE + " g "
+                + Db.WHERE
+                + "u." + Db.COL_ID + Db.EQUALS_ARG + Db.AND
+                + "a." + Address.COL_USER_ID + Db.EQUALS + "u." + Db.COL_ID + Db.AND
+                + "c." + Company.COL_USER_ID + Db.EQUALS + "u." + Db.COL_ID + Db.AND
+                + "g." + Geo.COL_ADDRESS_ID + Db.EQUALS + "a." + Db.COL_ID;
+
+        // TODO AlexTsymbal: create MAPPER with alias for all models
+        return briteDatabase.createQuery(tablesList, query, String.valueOf(id));
+    }
 }

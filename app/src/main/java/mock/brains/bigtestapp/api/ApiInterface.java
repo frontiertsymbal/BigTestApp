@@ -8,8 +8,8 @@ import mock.brains.bigtestapp.model.Photo;
 import mock.brains.bigtestapp.model.Post;
 import mock.brains.bigtestapp.model.Todo;
 import mock.brains.bigtestapp.model.User;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
